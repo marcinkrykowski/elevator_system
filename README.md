@@ -19,8 +19,8 @@ It's a plain `sbt` application. All you need to do is run `Main` class or execut
 
 ## Possible improvements
 Couple of possible improvements:
-- add more tests
-- refactor some parts to domain objects e.g. requests instead of List of ints
-- synchronise code, so it can be used in multi threading environment
-- make design and implementation more functional e.g. remove mutable state
-- change interface and remove unused arguments
+- [ ] add more tests
+- [ ] refactor some parts to domain objects e.g. requests instead of List of ints
+- [ ] synchronise code, so it can be used in multi threading environment
+- [ ] make design and implementation more functional e.g. remove mutable state
+- [ ] change interface and remove unused arguments
