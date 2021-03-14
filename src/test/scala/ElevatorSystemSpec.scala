@@ -19,26 +19,24 @@ class ElevatorSystemSpec extends AnyFlatSpec with Matchers with BeforeAndAfter {
   it should "receive a pickup request" in {
     val elevatorSystem = MyElevatorSystem(3)
 
-    // all elevators are at ground floor
+    // all elevators at ground floor
     elevatorSystem.elevatorsNum should be(3)
 
-    // 2 people queued up at 1st floor want to go down
+    // request at 1st floor to go down
     elevatorSystem.pickup(requestedFloor = 1, direction = Down)
 
-    // go over resources and pick the first fulfilling the request
-    // in current impl it'd be the first elevator
-    // no randomness or letting them to offer resources/themselves
+    // go over resources and pick the first fulfilling the request=
     elevatorSystem.status() should contain theSameElementsAs
       List((0, 0, List(1)), (1, 0, List()), (2, 0, List()))
 
-    // Time steps/ticks = one floor at a time across all elevators
+    // elevator goes up as requested
     elevatorSystem.step()
 
     // first elevator at 1st floor
     elevatorSystem.status() should contain theSameElementsAs
       List((0, 1, List()), (1, 0, List()), (2, 0, List()))
 
-    // take me from level 4 to 2
+    // request at 4th floor to go down
     elevatorSystem.pickup(requestedFloor = 4, direction = Down)
 
     elevatorSystem.status() should contain theSameElementsAs
@@ -54,17 +52,14 @@ class ElevatorSystemSpec extends AnyFlatSpec with Matchers with BeforeAndAfter {
     elevatorSystem.status() should contain theSameElementsAs
       List((0, 4, List()), (1, 0, List()), (2, 0, List()))
 
-    // Why do I have to update?!
-    // Is update to tell an elevator where to go? If so, why do I have to pass the current level?
-    // Or is this to tell what elevator is coming to handle a passenger at goalFloor?
-    // Let's assume it's to tell where an elevator should go to
+    // update is used to tell where an elevator should go to
     elevatorSystem.update(0, 4, 2)
 
-    // elevator #0 is going down from 4 to 2
+    // elevator id=0 is going down from 4 to 2
     elevatorSystem.status() should contain theSameElementsAs
       List((0, 4, List(2)), (1, 0, List()), (2, 0, List()))
 
-    // take me from level 5 down
+    // take me from 5th floor down
     elevatorSystem.pickup(requestedFloor = 5, direction = Down)
     elevatorSystem.status() should contain theSameElementsAs
       List((0, 4, List(2, 5)), (1, 0, List()), (2, 0, List()))
@@ -73,5 +68,23 @@ class ElevatorSystemSpec extends AnyFlatSpec with Matchers with BeforeAndAfter {
     elevatorSystem.pickup(requestedFloor = 1, direction = Up)
     elevatorSystem.status() should contain theSameElementsAs
       List((0, 4, List(2, 5)), (1, 0, List(1)), (2, 0, List()))
+
+    elevatorSystem.step()
+    elevatorSystem.step()
+    elevatorSystem.step()
+    elevatorSystem.step()
+    elevatorSystem.step()
+
+    elevatorSystem.status() should contain theSameElementsAs
+      List((0, 5, List()), (1, 1, List()), (2, 0, List()))
+
+    elevatorSystem.update(1, 1, 0)
+    elevatorSystem.update(0, 5, 3)
+
+    elevatorSystem.step()
+    elevatorSystem.step()
+
+    elevatorSystem.status() should contain theSameElementsAs
+      List((0, 3, List()), (1, 0, List()), (2, 0, List()))
   }
 }
