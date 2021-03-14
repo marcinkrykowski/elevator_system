@@ -14,6 +14,8 @@ The most important class is `MyElevatorSystem` that implements `ElevatorSystem` 
 
 In the implementation `MyElevatorSystem` uses `Elevator` class that contains implementations for each method respectively and contains `ElevatorState` to keep that traction of state for each elevator.
 
+To choose which elevator should fulfill the request system calculates function of cost. In our case that function is distance function. Elevator that is the closest to the floor that requested a pickup is chosen.
+
 ## How to run application
 It's a plain `sbt` application. All you need to do is run `Main` class or execute tests with `sbt test` command.
 
