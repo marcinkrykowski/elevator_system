@@ -26,3 +26,4 @@ Couple of possible improvements:
 - [ ] synchronise code, so it can be used in multi threading environment
 - [ ] make design and implementation more functional e.g. remove mutable state
 - [ ] change interface and remove unused arguments
+- [ ] use better cost function to decide which elevator should realise the request
